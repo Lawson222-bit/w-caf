@@ -1,0 +1,147 @@
+type Time = int;
+type MenuItem = 
+ record {
+   category: opt text;
+   name: text;
+   price: float64;
+ };
+type GiftCard = 
+ record {
+   balance: float64;
+   code: text;
+ };
+type CustomerOrder = 
+ record {
+   customerName: text;
+   id: nat;
+   items: vec MenuItem;
+   paymentMethod: opt text;
+   status: text;
+   timestamp: Time;
+   total: float64;
+   wPayCode: opt text;
+ };
+type CustomerCard = 
+ record {
+   balance: float64;
+   cardColor: text;
+   cardName: text;
+   cardNumber: text;
+   customerId: text;
+   customerUsername: text;
+   cvv: text;
+   expirationDate: text;
+   id: text;
+ };
+service : {
+  activateCardDevice: (code: text, orderId: nat) -> ();
+  addCardBalance: (cardId: text, amount: float64) ->
+   (variant {
+      err: text;
+      ok: CustomerCard;
+    });
+  addCustomCreditCard: (identifier: text, qrPayload: text) -> ();
+  addMenuItem: (name: text, price: float64, category: opt text) -> ();
+  addRewardPoints: (username: text, amount: nat) -> ();
+  clearPairingCode: (code: text) -> ();
+  completeTransaction: (items: vec MenuItem, total: float64, paymentMethod:
+   text) -> ();
+  createWPayOrder: (customerName: text, items: vec MenuItem, total:
+   float64) -> (text);
+  deleteCustomerCard: (cardId: text) -> (variant {
+                                           err: text;
+                                           ok;
+                                         });
+  editMenuItem: (index: nat, name: text, price: float64, category:
+   opt text) -> ();
+  generateCustomerCard: (username: text, password: text, cardName: text,
+   cardColor: text) -> (variant {
+                          err: text;
+                          ok: CustomerCard;
+                        });
+  generatePairingCode: () -> (text);
+  generatePaymentCode: (customerName: text, items: vec MenuItem, total:
+   float64) -> (text);
+  getAllCustomerCards: () -> (vec CustomerCard) query;
+  getCustomerCards: (username: text, password: text) ->
+   (variant {
+      err: text;
+      ok: vec CustomerCard;
+    });
+  getCustomerOrders: () -> (vec CustomerOrder) query;
+  getCustomerProfile: (username: text) ->
+   (variant {
+      err: text;
+      ok:
+       record {
+         cards: vec CustomerCard;
+         orders: vec CustomerOrder;
+         points: nat;
+       };
+    });
+  getDailySalesSummary: () ->
+   (record {
+      orderCount: nat;
+      topItems: vec record {
+                      name: text;
+                      quantity: nat;
+                    };
+      totalRevenue: float64;
+    }) query;
+  getGiftCard: (code: text) -> (GiftCard) query;
+  getMenu: () -> (vec MenuItem) query;
+  getMenuByCategory: () -> (vec MenuItem) query;
+  getOrderByPaymentCode: (code: text) -> (opt CustomerOrder) query;
+  getPairingCart: (code: text) ->
+   (opt
+     record {
+       items: vec MenuItem;
+       orderId: opt nat;
+       status: text;
+       total: float64;
+     }) query;
+  getPairingStatus: (code: text) -> (variant {
+                                       active: bool;
+                                       notFound;
+                                     }) query;
+  getRewardPoints: (username: text) -> (nat) query;
+  issueGiftCard: (code: text, balance: float64) -> ();
+  lookupWPayOrder: (code: text) -> (opt CustomerOrder) query;
+  markOrderPaidByCode: (code: text) -> ();
+  markPairingCodeUsed: (code: text) -> ();
+  markPairingPaid: (code: text) -> ();
+  markWPayOrderPaid: (code: text) -> ();
+  payWithCustomerCard: (cardId: text, amount: float64, username: text,
+   password: text) -> (variant {
+                         err: text;
+                         ok: CustomerCard;
+                       });
+  placeCustomerOrder: (customerName: text, items: vec MenuItem, total:
+   float64) -> (nat);
+  processCardDevicePayment: (code: text, cardNumber: text, cardName: 
+   text, expiryDate: text, cvv: text) -> (variant {
+                                            err: text;
+                                            ok;
+                                          });
+  redeemForGiftCard: (username: text, cardName: text) ->
+   (variant {
+      err: text;
+      ok: text;
+    });
+  redeemRewardPoints: (points: nat) -> (bool);
+  removeMenuItem: (index: nat) -> ();
+  setPairingOrder: (code: text, orderId: nat) -> ();
+  signIn: (username: text, password: text) -> (variant {
+                                                 err: text;
+                                                 ok: text;
+                                               });
+  signUp: (username: text, password: text) -> (variant {
+                                                 err: text;
+                                                 ok: text;
+                                               });
+  updateOrderStatus: (id: nat, status: text, paymentMethod: opt text) -> ();
+  updatePairingCart: (code: text, items: vec MenuItem, total: float64) -> ();
+  useGiftCard: (code: text, amount: float64) -> ();
+  validateCustomCreditCard: (qrPayload: text) -> (text) query;
+  validatePairingCode: (code: text) -> (bool) query;
+}

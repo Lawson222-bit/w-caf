@@ -1,0 +1,22 @@
+{
+  "overview": "Kid-safe Point of Sale system for W Café with dual passcode access, customer ordering, W Pay, rewards points, and daily sales reporting.",
+  "features": [
+    "Cashier POS with cart and checkout",
+    "Daily sales summary with top items",
+    "Customer online ordering with rewards points",
+    "W Pay payment flow with unique codes",
+    "Card payment device on separate screen",
+    "Gift card management",
+    "Customer accounts with points and generated cards"
+  ],
+  "category": "pos-system",
+  "tags": [
+    "cafe",
+    "pos",
+    "point-of-sale",
+    "kids",
+    "payments",
+    "sales-reporting"
+  ],
+  "last_updated": "2026-06-16T13:24:30.543Z"
+}
